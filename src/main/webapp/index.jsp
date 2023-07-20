@@ -8,11 +8,9 @@
  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 
 </head>
-<body>
+<body >
 
-	<h1 class="bg-danger">INDEX</h1>
-
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+	<jsp:include page="login/login.jsp"></jsp:include>
 
 </body>
 </html>

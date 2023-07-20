@@ -1,5 +1,5 @@
 package it.betacom.dao;
 
-public interface DAO {
-
+public interface DAO<T>{
+	void save();
 }
