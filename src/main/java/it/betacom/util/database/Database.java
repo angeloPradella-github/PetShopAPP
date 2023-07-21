@@ -37,9 +37,12 @@ public class Database {
 	}
 
 	public static Connection getConnection() throws SQLException {
-		Connection connection = null;
-		connection = DriverManager.getConnection(url, user, password);
+	    try {
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        throw new SQLException("MySQL JDBC Driver not found.", e);
+	    }
 
-		return connection;
+	    return DriverManager.getConnection(url, user, password);
 	}
 }

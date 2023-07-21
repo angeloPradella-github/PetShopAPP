@@ -10,7 +10,7 @@
 </head>
 <body class="d-flex flex-column justify-content-center align-items-center vh-100">
 <h1>LOGIN</h1>
-	<form action="adduser.jsp" method="post" class="w-50">
+	<form action="../servlet/login-servlet.jsp" method="post" class="w-50">
 		<!-- Email input -->
 		<div class="form-outline mb-4">
 			<input type="text" name="username" id="form2Example1" class="form-control" /> <label
@@ -41,7 +41,7 @@
 		</div>
 
 		<!-- Submit button -->
-		<button type="button" class="btn btn-primary btn-block mb-4">Sign
+		<button type="sumbit" class="btn btn-primary btn-block mb-4">Sign
 			in</button>
 
 		<!-- Register buttons -->

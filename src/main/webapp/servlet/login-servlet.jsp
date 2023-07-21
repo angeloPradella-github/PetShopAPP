@@ -16,8 +16,8 @@ Connection con = Database.getConnection();
 UserImpl userDAO = new UserImpl(con);
 int i = userDAO.login(u.getUsername(), u.getPassword());
 if (i > 0) {
-	response.sendRedirect("util/login-success.jsp");
+	response.sendRedirect("../util/login-success.html");
 } else
-	response.sendRedirect("util/login-error.jsp");
+	response.sendRedirect("../util/login-error.html");
 %>
 </html>
