@@ -24,33 +24,33 @@ public class UserImpl implements UserDAO {
 	}
 
 	@Override
-	public int login(String Username, String Passowrd) {
-		try {
+	public String login(String Username, String Passowrd) {
+        try {
 
-			String q = "select * from users where username = ? and password = ?";
-			PreparedStatement ps = con.prepareStatement(q);
-			ps.setString(1, Username);
-			ps.setString(2, Passowrd);
+            String q = "select * from users where username = ? and password = ?";
+            PreparedStatement ps = con.prepareStatement(q);
+            ps.setString(1, Username);
+            ps.setString(2, Passowrd);
 
-			ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
-				String status = rs.getString("status");
-				
-				if (status.equals("A")) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
+            if (rs.next()) {
+                String status = rs.getString("status");
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+                if (status.equals("A")) {
+                    return "success";
+                }
+                else {
+                    return "User not abilitated";
+                }
+            }
 
-		return 0;
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "Wrong Credentilas";
+    }
 
 	@Override
 	public List<User> getAll() {
@@ -160,5 +160,36 @@ public class UserImpl implements UserDAO {
 		return false;
 
 	}
+
+	@Override
+	public User getUserByUsername(String username) {
+	    User user = null;
+	    String sql = "SELECT * FROM users WHERE username = ?";
+	    
+	    try (PreparedStatement ps = con.prepareStatement(sql)) {
+	        ps.setString(1, username);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        if (rs.next()) {
+	            user = new User();
+	            user.setUsername(rs.getString("username"));
+	            user.setPassword(rs.getString("password"));
+	            user.setRole(rs.getString("role"));
+	            user.setName(rs.getString("name"));
+	            user.setSurname(rs.getString("surname"));
+	            user.setEmail(rs.getString("email"));
+	            user.setTel(rs.getString("tel"));
+	            user.setBirthdate(rs.getDate("birthdate"));
+	            user.setStatus(rs.getString("status"));
+	        }
+	        
+	        rs.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return user;
+	}
+
 
 }

@@ -5,6 +5,8 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="it.betacom.util.database.*"%>
 <%@page import="it.betacom.dao.impl.*"%>
+<%@page import="it.betacom.model.User"%>
+
 
 
 <jsp:useBean id="u" class="it.betacom.model.User"></jsp:useBean>
@@ -14,12 +16,16 @@
 <%
 Connection con = Database.getConnection();
 UserImpl userDAO = new UserImpl(con);
-int i = userDAO.login(u.getUsername(), u.getPassword());
-if (i > 0) {
+String i = userDAO.login(u.getUsername(), u.getPassword());
+if (i.equals("success")) {
+	User loggedInUser = userDAO.getUserByUsername(u.getUsername());
+	String role = loggedInUser.getRole();
 	session.setAttribute("username", u.getUsername());
-	session.setAttribute("role", u.getRole());
+	session.setAttribute("role", role);
 	response.sendRedirect("../util/login-success.html");
-} else
-	response.sendRedirect("../util/login-error.html");
+} else {
+	session.setAttribute("loginMessage", i);
+	response.sendRedirect("../util/login-error.jsp");
+}
 %>
 </html>
