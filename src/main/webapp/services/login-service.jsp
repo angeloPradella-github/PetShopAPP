@@ -16,6 +16,8 @@ Connection con = Database.getConnection();
 UserImpl userDAO = new UserImpl(con);
 int i = userDAO.login(u.getUsername(), u.getPassword());
 if (i > 0) {
+	session.setAttribute("username", u.getUsername());
+	session.setAttribute("role", u.getRole());
 	response.sendRedirect("../util/login-success.html");
 } else
 	response.sendRedirect("../util/login-error.html");

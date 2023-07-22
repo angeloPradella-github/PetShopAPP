@@ -83,7 +83,7 @@ public class UserImpl implements UserDAO {
 		String newUsername = generaUsername(user);
 
 		try {
-			String q = "INSERT INTO users (name, surname, email, tel, birthdate, password, role, status, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String q = "INSERT INTO users (name, surname, email, tel, birthdate, password, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement ps = con.prepareStatement(q);
 
@@ -93,18 +93,16 @@ public class UserImpl implements UserDAO {
 			ps.setString(4, user.getTel());
 			ps.setDate(5, new java.sql.Date(user.getBirthdate().getTime()));
 			ps.setString(6, user.getPassword());
-			ps.setString(7, user.getRole());
-			ps.setString(8, user.getStatus());
-			ps.setString(9, newUsername);
+			ps.setString(7, newUsername);
 
 			int result = ps.executeUpdate();
 
 			ps.close();
 
 			if (result > 0) {
-				return "User saved successfully";
+				return "Registration completed successfully. Your username is: "+ newUsername;
 			} else {
-				return "Error in saving user";
+				return "Error in completing your registration.";
 			}
 
 		} catch (SQLException e) {
@@ -134,7 +132,7 @@ public class UserImpl implements UserDAO {
 			if (rs.next()) {
 				int tot = rs.getInt("totale");
 				if (tot > 0) {
-					strTotal = strTotal + (tot + 1);
+					strTotal = strTotal +"_"+ (tot + 1);
 				}
 			}
 

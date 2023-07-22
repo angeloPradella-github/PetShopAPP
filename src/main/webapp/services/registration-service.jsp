@@ -16,6 +16,7 @@
     String surname = request.getParameter("surname");
     String email = request.getParameter("email");
     String password = request.getParameter("password");
+    String tel = request.getParameter("tel");
     String birthdate = request.getParameter("birthdate");
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -31,6 +32,8 @@
     u.setEmail(email);
     u.setPassword(password);
     u.setBirthdate(dateOfBirth);
+    u.setTel(tel);
+
 %>
 
 <!DOCTYPE html>
@@ -45,7 +48,9 @@
     UserImpl userDAO = new UserImpl(con);
 
     String result = userDAO.save(u);
-    out.println("<p>" + result + "</p>");
+    request.setAttribute("result", result); 
+    request.getRequestDispatcher("../util/result-page.jsp").forward(request, response); 
 %>
+
 </body>
 </html>
