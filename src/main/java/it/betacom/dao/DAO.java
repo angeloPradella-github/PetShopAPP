@@ -3,6 +3,6 @@ package it.betacom.dao;
 import java.util.List;
 
 public interface DAO<T>{
-	void save();
+	String save(T t);
 	List<T> getAll();
 }

@@ -10,7 +10,7 @@
 </head>
 <body class="d-flex flex-column justify-content-center align-items-center vh-100">
 <h1>LOGIN</h1>
-	<form action="../servlet/login-servlet.jsp" method="post" class="w-50">
+	<form action="../services/login-service.jsp" method="post" class="w-50">
 		<!-- Email input -->
 		<div class="form-outline mb-4">
 			<input type="text" name="username" id="form2Example1" class="form-control" /> <label
@@ -47,7 +47,7 @@
 		<!-- Register buttons -->
 		<div class="text-center">
 			<p>
-				Not a member? <a href="registrazione/register.jsp">Register</a>
+				Not a member? <a href="../registrazione/register.jsp">Register</a>
 			</p>
 			<p>or sign up with:</p>
 			<button type="button" class="btn btn-link btn-floating mx-1">

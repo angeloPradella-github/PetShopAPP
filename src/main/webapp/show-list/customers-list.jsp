@@ -23,13 +23,11 @@
 		<tr>
 			<th>Username</th>
 			<th>Password</th>
-			<!-- Include additional columns as needed -->
 		</tr>
 		<% for(User user : userList) { %>
 			<tr>
 				<td><%= user.getUsername() %></td>
 				<td><%= user.getPassword() %></td>
-				<!-- Output additional user details as needed -->
 			</tr>
 		<% } %>
 	</table>
