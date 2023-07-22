@@ -35,7 +35,14 @@ public class UserImpl implements UserDAO {
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
-				return 1;
+				String status = rs.getString("status");
+				
+				if (status.equals("A")) {
+					return 1;
+				}
+				else {
+					return 0;
+				}
 			}
 
 		} catch (SQLException e) {
