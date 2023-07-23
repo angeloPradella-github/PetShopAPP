@@ -1,6 +1,9 @@
 package it.betacom.dao.impl;
 
 import java.sql.Connection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +15,7 @@ import it.betacom.dao.UserDAO;
 import it.betacom.model.User;
 
 public class UserImpl implements UserDAO {
+	private static final Logger logger = LogManager.getLogger(UserImpl.class);
 
 	private Connection con;
 
@@ -25,32 +29,35 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public String login(String Username, String Passowrd) {
-        try {
+		try {
 
-            String q = "select * from users where username = ? and password = ?";
-            PreparedStatement ps = con.prepareStatement(q);
-            ps.setString(1, Username);
-            ps.setString(2, Passowrd);
+			String q = "select * from users where username = ? and password = ?";
+			PreparedStatement ps = con.prepareStatement(q);
+			ps.setString(1, Username);
+			ps.setString(2, Passowrd);
 
-            ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                String status = rs.getString("status");
+			if (rs.next()) {
+				String status = rs.getString("status");
 
-                if (status.equals("A")) {
-                    return "success";
-                }
-                else {
-                    return "User not abilitated";
-                }
-            }
+				if (status.equals("A")) {
+					logger.info("Login effettuato per l’utente " + Username);
+					return "success";
+				} else {
+					logger.info("Utente " + Username + " non abilitato");
+					return "User not abilitated";
+				}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			}
 
-        return "Wrong Credentilas";
-    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		logger.debug("Credenziali errate per l’utente " + Username);
+
+		return "Wrong Credentilas";
+	}
 
 	@Override
 	public List<User> getAll() {
@@ -75,6 +82,8 @@ public class UserImpl implements UserDAO {
 				u.setUsername(rs.getString("username"));
 				userList.add(u);
 			}
+			logger.debug("Elenco utenti recuperato");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -84,6 +93,7 @@ public class UserImpl implements UserDAO {
 	@Override
 	public String save(User user) {
 		if (!isPwValid(user.getPassword())) {
+			logger.debug("Password invalida per l'utente " + user.getUsername());
 			return "Invalid Password";
 		}
 
@@ -107,7 +117,8 @@ public class UserImpl implements UserDAO {
 			ps.close();
 
 			if (result > 0) {
-				return "Registration completed successfully. Your username is: "+ newUsername;
+				logger.info("Registrazione effettuata per l’utente " + user.getName() + " " + user.getSurname());
+				return "Registration completed successfully. Your username is: " + newUsername;
 			} else {
 				return "Error in completing your registration.";
 			}
@@ -139,7 +150,7 @@ public class UserImpl implements UserDAO {
 			if (rs.next()) {
 				int tot = rs.getInt("totale");
 				if (tot > 0) {
-					strTotal = strTotal +"_"+ (tot + 1);
+					strTotal = strTotal + "_" + (tot + 1);
 				}
 			}
 
@@ -163,33 +174,56 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public User getUserByUsername(String username) {
-	    User user = null;
-	    String sql = "SELECT * FROM users WHERE username = ?";
-	    
-	    try (PreparedStatement ps = con.prepareStatement(sql)) {
-	        ps.setString(1, username);
-	        ResultSet rs = ps.executeQuery();
-	        
-	        if (rs.next()) {
-	            user = new User();
-	            user.setUsername(rs.getString("username"));
-	            user.setPassword(rs.getString("password"));
-	            user.setRole(rs.getString("role"));
-	            user.setName(rs.getString("name"));
-	            user.setSurname(rs.getString("surname"));
-	            user.setEmail(rs.getString("email"));
-	            user.setTel(rs.getString("tel"));
-	            user.setBirthdate(rs.getDate("birthdate"));
-	            user.setStatus(rs.getString("status"));
-	        }
-	        
-	        rs.close();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    
-	    return user;
+		User user = null;
+		String sql = "SELECT * FROM users WHERE username = ?";
+
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				user = new User();
+				user.setUsername(rs.getString("username"));
+				user.setPassword(rs.getString("password"));
+				user.setRole(rs.getString("role"));
+				user.setName(rs.getString("name"));
+				user.setSurname(rs.getString("surname"));
+				user.setEmail(rs.getString("email"));
+				user.setTel(rs.getString("tel"));
+				user.setBirthdate(rs.getDate("birthdate"));
+				user.setStatus(rs.getString("status"));
+			}
+
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return user;
 	}
 
+	@Override
+	public String switchRole(int id) {
+	    String sql = "UPDATE users SET role = CASE WHEN role = 'G' THEN 'A' ELSE 'G' END WHERE id = ?";
+	    String sql2 = "SELECT * from users where id = ?";
+	    try {
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setInt(1, id);
+	        int rowsAffected = ps.executeUpdate();
+
+	        PreparedStatement ps2 = con.prepareStatement(sql2);
+	        ps2.setInt(1, id);
+	        ResultSet rows = ps2.executeQuery();
+
+	        if (rowsAffected > 0 && rows.next()) {
+	            return "Role of "+rows.getString("username")+" switched successfully";
+	        } else {
+	            return "No user found with given id";
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return "Error while switching role";
+	    }
+	}
 
 }

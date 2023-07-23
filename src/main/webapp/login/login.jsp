@@ -6,8 +6,6 @@
 <meta charset="ISO-8859-1">
 <title>LOGIN</title>
  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
-
-</head>
 <body class="d-flex flex-column justify-content-center align-items-center vh-100">
 <h1>LOGIN</h1>
 	<form action="../services/login-service.jsp" method="post" class="w-50">
