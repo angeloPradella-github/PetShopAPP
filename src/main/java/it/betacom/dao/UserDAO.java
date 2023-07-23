@@ -6,5 +6,5 @@ public interface UserDAO extends DAO<User>{
 	String login(String Username, String Passowrd);
 	User getUserByUsername(String username);
 	String switchRole(int id);
-
+	String switchStatus(int id);
 }

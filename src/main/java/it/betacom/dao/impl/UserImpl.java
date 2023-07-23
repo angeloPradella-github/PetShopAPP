@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -204,26 +205,136 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public String switchRole(int id) {
-	    String sql = "UPDATE users SET role = CASE WHEN role = 'G' THEN 'A' ELSE 'G' END WHERE id = ?";
-	    String sql2 = "SELECT * from users where id = ?";
-	    try {
-	        PreparedStatement ps = con.prepareStatement(sql);
-	        ps.setInt(1, id);
-	        int rowsAffected = ps.executeUpdate();
+		String sql = "UPDATE users SET role = CASE WHEN role = 'G' THEN 'A' ELSE 'G' END WHERE id = ?";
+		String sql2 = "SELECT * from users where id = ?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			int rowsAffected = ps.executeUpdate();
 
-	        PreparedStatement ps2 = con.prepareStatement(sql2);
-	        ps2.setInt(1, id);
-	        ResultSet rows = ps2.executeQuery();
+			PreparedStatement ps2 = con.prepareStatement(sql2);
+			ps2.setInt(1, id);
+			ResultSet rows = ps2.executeQuery();
 
-	        if (rowsAffected > 0 && rows.next()) {
-	            return "Role of "+rows.getString("username")+" switched successfully";
-	        } else {
-	            return "No user found with given id";
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return "Error while switching role";
-	    }
+			if (rowsAffected > 0 && rows.next()) {
+				return "Role of " + rows.getString("username") + " switched successfully";
+			} else {
+				return "No user found with given id";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Error while switching role";
+		}
+	}
+
+	@Override
+	public String switchStatus(int id) {
+		String sql = "UPDATE users SET status = CASE WHEN status = 'A' THEN 'D' ELSE 'A' END WHERE id = ?";
+		String sql2 = "SELECT * from users where id = ?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			int rowsAffected = ps.executeUpdate();
+
+			PreparedStatement ps2 = con.prepareStatement(sql2);
+			ps2.setInt(1, id);
+			ResultSet rows = ps2.executeQuery();
+
+			if (rowsAffected > 0 && rows.next()) {
+				return "Status of " + rows.getString("username") + " switched successfully";
+			} else {
+				return "No user found with given id";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Error while switching status";
+		}
+	}
+
+	@Override
+	public String update(User user) {
+		if (user == null || Objects.isNull(user.getId())) {
+			return "Invalid user data";
+		}
+
+		String sql = "UPDATE users SET id = id";
+
+		// verifica di ogni campo dell oggetto
+		if (user.getName() != null) {
+			sql += ", name = ?";
+		}
+		if (user.getSurname() != null) {
+			sql += ", surname = ?";
+		}
+		if (user.getEmail() != null) {
+			sql += ", email = ?";
+		}
+		if (user.getTel() != null) {
+			sql += ", tel = ?";
+		}
+		if (user.getBirthdate() != null) {
+			sql += ", birthdate = ?";
+		}
+		if (user.getPassword() != null) {
+			sql += ", password = ?";
+		}
+		if (user.getRole() != null) {
+			sql += ", role = ?";
+		}
+		if (user.getStatus() != null) {
+			sql += ", status = ?";
+		}
+		if (user.getUsername() != null) {
+			sql += ", username = ?";
+		}
+
+		sql += " WHERE id = ?";
+
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			int index = 1;
+			if (user.getName() != null) {
+				ps.setString(index++, user.getName());
+			}
+			if (user.getSurname() != null) {
+				ps.setString(index++, user.getSurname());
+			}
+			if (user.getEmail() != null) {
+				ps.setString(index++, user.getEmail());
+			}
+			if (user.getTel() != null) {
+				ps.setString(index++, user.getTel());
+			}
+			if (user.getBirthdate() != null) {
+				ps.setDate(index++, new java.sql.Date(user.getBirthdate().getTime()));
+			}
+			if (user.getPassword() != null) {
+				ps.setString(index++, user.getPassword());
+			}
+			if (user.getRole() != null) {
+				ps.setString(index++, user.getRole());
+			}
+			if (user.getStatus() != null) {
+				ps.setString(index++, user.getStatus());
+			}
+			if (user.getUsername() != null) {
+				ps.setString(index++, user.getUsername());
+			}
+
+			ps.setInt(index, user.getId());
+
+			int rowsAffected = ps.executeUpdate();
+
+			if (rowsAffected > 0) {
+				return "User " + user.getId() + " updated successfully";
+			} else {
+				return "No user found with given id";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Error while updating user";
+		}
 	}
 
 }
