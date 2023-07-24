@@ -29,35 +29,87 @@ public class UserImpl implements UserDAO {
 	}
 
 	@Override
-	public String login(String Username, String Passowrd) {
+	public String login(String username, String password) {
+
 		try {
+			int userId = -1;
+			String getIdQ = "SELECT id FROM users WHERE username = ?";
+			PreparedStatement getIdPS;
+			getIdPS = con.prepareStatement(getIdQ);
+			getIdPS.setString(1, username);
+			ResultSet idRS = getIdPS.executeQuery();
 
-			String q = "select * from users where username = ? and password = ?";
-			PreparedStatement ps = con.prepareStatement(q);
-			ps.setString(1, Username);
-			ps.setString(2, Passowrd);
+			if (idRS.next()) {
+				userId = idRS.getInt("id");
 
-			ResultSet rs = ps.executeQuery();
+				try {
 
-			if (rs.next()) {
-				String status = rs.getString("status");
+					// Query to get user ID
 
-				if (status.equals("A")) {
-					logger.info("Login effettuato per l’utente " + Username);
-					return "success";
-				} else {
-					logger.info("Utente " + Username + " non abilitato");
-					return "User not abilitated";
+					// Query to check login
+					String checkQ = "SELECT * FROM users WHERE username = ? AND password = ?";
+					PreparedStatement checkPS = con.prepareStatement(checkQ);
+					checkPS.setString(1, username);
+					checkPS.setString(2, password);
+					ResultSet rs = checkPS.executeQuery();
+
+					if (rs.next()) {
+
+						// Reset login error count on success
+						String resetQ = "UPDATE users SET number_login_error = 0 WHERE id = ?";
+						PreparedStatement resetPS = con.prepareStatement(resetQ);
+						resetPS.setInt(1, userId);
+						resetPS.executeUpdate();
+
+						String status = rs.getString("status");
+						if (status.equals("A")) {
+							return "success";
+						} else {
+							return "User not abilitated";
+						}
+
+					} else {
+
+						String incrQ = "UPDATE users SET number_login_error = number_login_error + 1 WHERE id = ?";
+						PreparedStatement incrPS;
+						try {
+							incrPS = con.prepareStatement(incrQ);
+							incrPS.setInt(1, userId);
+							incrPS.executeUpdate();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+						return "Wrong Credentials";
+
+					}
+
+				} catch (SQLException e) {
+					String incrQ = "UPDATE users SET number_login_error = number_login_error + 1 WHERE id = ?";
+					PreparedStatement incrPS;
+					try {
+						incrPS = con.prepareStatement(incrQ);
+						incrPS.setInt(1, userId);
+						incrPS.executeUpdate();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					e.printStackTrace();
+					return "Wrong Credentials";
 				}
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return "Error";
 		}
-		logger.debug("Credenziali errate per l’utente " + Username);
+		return "Error";
 
-		return "Wrong Credentilas";
 	}
 
 	@Override
