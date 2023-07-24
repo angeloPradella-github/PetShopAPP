@@ -43,10 +43,7 @@ public class UserImpl implements UserDAO {
 				userId = idRS.getInt("id");
 
 				try {
-
-					// Query to get user ID
-
-					// Query to check login
+				
 					String checkQ = "SELECT * FROM users WHERE username = ? AND password = ?";
 					PreparedStatement checkPS = con.prepareStatement(checkQ);
 					checkPS.setString(1, username);
@@ -55,7 +52,7 @@ public class UserImpl implements UserDAO {
 
 					if (rs.next()) {
 
-						// Reset login error count on success
+						// Reset degli errori al login corretto
 						String resetQ = "UPDATE users SET number_login_error = 0 WHERE id = ?";
 						PreparedStatement resetPS = con.prepareStatement(resetQ);
 						resetPS.setInt(1, userId);
@@ -77,11 +74,10 @@ public class UserImpl implements UserDAO {
 							incrPS.setInt(1, userId);
 							incrPS.executeUpdate();
 						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 
-						return "Wrong Credentials";
+						return "Wrong Credentials"+userId;
 
 					}
 
@@ -93,7 +89,6 @@ public class UserImpl implements UserDAO {
 						incrPS.setInt(1, userId);
 						incrPS.executeUpdate();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
@@ -104,12 +99,10 @@ public class UserImpl implements UserDAO {
 			}
 
 		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 			return "Error";
 		}
 		return "Error";
-
 	}
 
 	@Override
@@ -257,7 +250,7 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public String switchRole(int id) {
-		String sql = "UPDATE users SET role = CASE WHEN role = 'G' THEN 'A' ELSE 'G' END WHERE id = ?";
+		String sql = "UPDATE users SET role = CASE WHEN role = 'G' THEN 'M' ELSE 'G' END WHERE id = ?";
 		String sql2 = "SELECT * from users where id = ?";
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
