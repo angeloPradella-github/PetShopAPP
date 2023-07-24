@@ -111,7 +111,7 @@
 							<%
 							if (role != null && role.equalsIgnoreCase("M")) {
 							%>
-							<button id="edit-<%=user.getId()%>" class="edit-button">
+							<button id="edit-<%=user.getId()%>" class="edit-button btn btn-sm btn-outline-secondary">
 								<i class="fas fa-edit"></i>
 							</button> <%
  }
