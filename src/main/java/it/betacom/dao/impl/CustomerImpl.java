@@ -61,22 +61,38 @@ public class CustomerImpl implements CustomerDAO {
 	@Override
 	public List<Animal> getAnimals(int customerId) {
 
-		String sql = "select * from customers c	join animals a on c.customerId = a.customerId";
+		String sql = "select * from customers c join animals a on c.customerId = a.customerId where c.customerId = ?";
+
+		List<Animal> animals = new ArrayList<>();
+
 		try {
+
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, customerId);
+
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
+
 				Animal currentAnimal = new Animal();
-				
+
+				currentAnimal.setRegistrationNumber(rs.getInt("registrationNumber"));
 				currentAnimal.setAnimalName(rs.getString("animalName"));
+				currentAnimal.setPurchaseDate(rs.getDate("purchaseDate"));
+				currentAnimal.setPrice(rs.getDouble("price"));
+				currentAnimal.setAnimalType(rs.getString("animalType"));
+				currentAnimal.setCustomerId(rs.getInt("customerId"));
+
+				animals.add(currentAnimal);
+
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return null;
+		return animals;
+
 	}
 
 }

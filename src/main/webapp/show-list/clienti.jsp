@@ -27,13 +27,31 @@
 
     <%
     if (session.getAttribute("username") == null) {
+    
         response.sendRedirect("../login/login.jsp");
         return;
     }
+ String customerId1 = request.getParameter("customerId");
+ 
+
 
     String result = (String) request.getAttribute("result"); //messaggio di result
 
-    Connection con = Database.getConnection();
+      Connection con = Database.getConnection();
+      
+      List<Animal> animalList = null;
+    
+     if(customerId1 != null) {
+   
+    int customerId = Integer.parseInt(customerId1); 
+     
+     CustomerImpl customerImpl = new CustomerImpl(con);
+     
+     
+animalList = customerImpl.getAnimals(customerId);
+     
+
+ }
     CustomerDAO customerDAO = new CustomerImpl(con);
     List<Customer> customerList = customerDAO.getAll();
     %>
@@ -64,7 +82,7 @@
                         <td><%=customer.getPhoneNumber()%></td>
                         <td>
                             <a class="btn btn-sm btn-outline-secondary"
-                                href="../services/view-purchased-animals.jsp?id=<%=customer.getCustomerId()%>"> 
+                                href="clienti.jsp?customerId=<%=customer.getCustomerId()%>"> 
                                 <i class="fa-solid fa-eye"></i> Mostra
                             </a>
                         </td>
@@ -84,6 +102,50 @@
         </div>
         <%
         }
+        
+        
+        
+        %>
+        
+        
+        
+        <%
+         if (animalList != null) {
+        %>
+        <div class="mt-3">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Animal Name</th>
+                        <th>Purchase Date</th>
+                        <th>Price</th>
+                        <th>Animal Type</th>
+                        <th>Registration number</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <%
+                    for (Animal animal : animalList) {
+                    %>
+                    <tr>
+                        <td><%=animal.getAnimalName()%></td>
+                        <td><%=animal.getPurchaseDate()%></td>
+                        <td><%=animal.getPrice()%></td>
+                        <td><%=animal.getAnimalType()%></td>
+                        <td><%=animal.getRegistrationNumber()%></td>
+                        
+                    </tr>
+                    <%
+                    }
+                    %>
+                </tbody>
+            </table>
+        </div>
+        <%
+        }
+        
         %>
 
     </div>
