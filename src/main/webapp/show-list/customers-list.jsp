@@ -42,6 +42,7 @@
 	%>
 
 	<div class="container mt-4">
+	 <h1 class="mt-4">Tabella Utenti Registrati</h1>
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped">
 				<thead>

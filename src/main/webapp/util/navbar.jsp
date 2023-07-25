@@ -19,8 +19,8 @@
 						Clienti</a>
 				</li>
 			</ul>
-			<span class="navbar-text"> <%=session.getAttribute("username")%>,
-				<%=session.getAttribute("role")%>
+			<span class="navbar-text"><strong> <%=session.getAttribute("username")%>,
+				<%=session.getAttribute("role")%></strong>
 
 			</span>
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">

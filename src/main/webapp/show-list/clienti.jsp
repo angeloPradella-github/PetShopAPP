@@ -20,6 +20,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
 </head>
 
 <body>
@@ -57,6 +58,7 @@ animalList = customerImpl.getAnimals(customerId);
     %>
 
     <div class="container mt-4">
+    <h1 class="mt-4">Tabella Clienti</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -112,7 +114,9 @@ animalList = customerImpl.getAnimals(customerId);
         <%
          if (animalList != null) {
         %>
+         <h1 class="mt-4">Acquisti Cliente</h1>
         <div class="mt-3">
+       
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -120,7 +124,10 @@ animalList = customerImpl.getAnimals(customerId);
                         <th>Purchase Date</th>
                         <th>Price</th>
                         <th>Animal Type</th>
-                        <th>Registration number</th>
+                        <th class="d-flex justify-content-between">Registration number
+                        <a href="clienti.jsp">
+                        <i class="fa-solid fa-rectangle-xmark text-danger"></i></a>
+                        </th>
                         
                     </tr>
                 </thead>
@@ -143,6 +150,8 @@ animalList = customerImpl.getAnimals(customerId);
                 </tbody>
             </table>
         </div>
+        
+        
         <%
         }
         
