@@ -92,31 +92,34 @@
 						}
 						%>
 						<td id="role-<%=user.getId()%>"><%=user.getRole()%> <%
- 	if (role != null && role.equalsIgnoreCase("M")) {
- 	%> <a class="btn btn-sm btn-outline-secondary"
+ if (role != null && role.equalsIgnoreCase("M")) {
+ %> <a class="btn btn-sm btn-outline-secondary"
 							href="../services/switch-role.jsp?id=<%=user.getId()%>"> <i
 								class="fa-solid fa-repeat"></i>
 						</a> <%
- 	}
- 	%></td>
+ }
+ %></td>
 						<td id="status-<%=user.getId()%>"><%=user.getStatus()%> <%
- 	if (role != null && role.equalsIgnoreCase("M")) {
- 	%> <a href="../services/switch-status.jsp?id=<%=user.getId()%>"
+ if (role != null && role.equalsIgnoreCase("M")) {
+ %> <a href="../services/switch-status.jsp?id=<%=user.getId()%>"
 							class="btn btn-sm btn-outline-secondary"> <i
 								class="fa-solid fa-repeat"></i>
 						</a> <%
- 	}
- 	%></td>
-						<td>
+ }
+ %></td>
+						
 							<%
 							if (role != null && role.equalsIgnoreCase("M")) {
 							%>
-							<button id="edit-<%=user.getId()%>" class="edit-button btn btn-sm btn-outline-secondary">
+							<td>
+							<button id="edit-<%=user.getId()%>"
+								class="edit-button btn btn-sm btn-outline-secondary">
 								<i class="fas fa-edit"></i>
-							</button> <%
+							</button>
+							</td> <%
  }
  %>
-						</td>
+						
 					</tr>
 
 					<%

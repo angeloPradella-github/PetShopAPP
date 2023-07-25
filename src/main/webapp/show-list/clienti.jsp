@@ -1,0 +1,94 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@page import="it.betacom.dao.CustomerDAO"%>
+<%@page import="it.betacom.*"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="it.betacom.util.database.*"%>
+<%@page import="it.betacom.model.*"%>
+<%@page import="it.betacom.dao.impl.*"%>
+<%@page import="java.util.*"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Customer List</title>
+
+<link rel="stylesheet"
+    href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <jsp:include page="../util/navbar.jsp"></jsp:include>
+
+    <%
+    if (session.getAttribute("username") == null) {
+        response.sendRedirect("../login/login.jsp");
+        return;
+    }
+
+    String result = (String) request.getAttribute("result"); //messaggio di result
+
+    Connection con = Database.getConnection();
+    CustomerDAO customerDAO = new CustomerImpl(con);
+    List<Customer> customerList = customerDAO.getAll();
+    %>
+
+    <div class="container mt-4">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Phone Number</th>
+                        <th>View Purchased Animals</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <%
+                    for (Customer customer : customerList) {
+                    %>
+                    <tr>
+                        <td><%=customer.getFirstName()%></td>
+                        <td><%=customer.getLastName()%></td>
+                        <td><%=customer.getAddress()%></td>
+                        <td><%=customer.getCity()%></td>
+                        <td><%=customer.getPhoneNumber()%></td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-secondary"
+                                href="../services/view-purchased-animals.jsp?id=<%=customer.getCustomerId()%>"> 
+                                <i class="fa-solid fa-eye"></i> Mostra
+                            </a>
+                        </td>
+                    </tr>
+                    <%
+                    }
+                    %>
+                </tbody>
+            </table>
+        </div>
+        <%
+        if (result != null && !result.isEmpty()) {
+        %>
+        <div class="mt-3">
+            <p
+                class="alert alert-<%=result.contains("success") ? "success" : "danger"%>"><%=result%></p>
+        </div>
+        <%
+        }
+        %>
+
+    </div>
+
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+
+</body>
+</html>
