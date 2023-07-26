@@ -8,4 +8,5 @@ import it.betacom.model.Customer;
 public interface CustomerDAO extends DAO<Customer> {
     List<Customer> getAll();
     List<Animal> getAnimals(int customerId);
+	Customer getCustomerById(int customerId);
 }

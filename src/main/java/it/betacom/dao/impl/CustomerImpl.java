@@ -94,5 +94,32 @@ public class CustomerImpl implements CustomerDAO {
 		return animals;
 
 	}
+	
+	@Override
+	public Customer getCustomerById(int customerId) {
+	    String sql = "SELECT * FROM Customers WHERE customerId = ?";
+	    Customer customer = null;
+
+	    try {
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ps.setInt(1, customerId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            customer = new Customer();
+	            customer.setCustomerId(rs.getInt("customerId"));
+	            customer.setFirstName(rs.getString("firstName"));
+	            customer.setLastName(rs.getString("lastName"));
+	            customer.setAddress(rs.getString("address"));
+	            customer.setCity(rs.getString("city"));
+	            customer.setPhoneNumber(rs.getString("phoneNumber"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return customer;
+	}
+
 
 }
