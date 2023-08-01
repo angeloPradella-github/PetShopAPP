@@ -18,6 +18,8 @@
 				<li class="nav-item"><a class="nav-link" href="../show-list/clienti.jsp">Lista
 						Clienti</a>
 				</li>
+				<li class="nav-item"><a class="nav-link" href="../save-animal/save-animal.jsp">Inserisci nuovo Animale</a>
+				</li>
 			</ul>
 			<span class="navbar-text"><strong> <%=session.getAttribute("username")%>,
 				<%=session.getAttribute("role")%></strong>

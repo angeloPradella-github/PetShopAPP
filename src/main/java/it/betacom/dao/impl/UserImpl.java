@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.betacom.dao.UserDAO;
+import it.betacom.model.Animal;
 import it.betacom.model.User;
 
 public class UserImpl implements UserDAO {
@@ -43,7 +44,7 @@ public class UserImpl implements UserDAO {
 				userId = idRS.getInt("id");
 
 				try {
-				
+
 					String checkQ = "SELECT * FROM users WHERE username = ? AND password = ?";
 					PreparedStatement checkPS = con.prepareStatement(checkQ);
 					checkPS.setString(1, username);
@@ -60,9 +61,8 @@ public class UserImpl implements UserDAO {
 
 						String status = rs.getString("status");
 						if (status.equals("A")) {
-							logger.error("utente "+userId+" loggato");
+							logger.error("utente " + userId + " loggato");
 							logger.info("gggggggg");
-
 
 							return "success";
 						} else {
@@ -81,7 +81,7 @@ public class UserImpl implements UserDAO {
 							e1.printStackTrace();
 						}
 
-						return "Wrong Credentials"+userId;
+						return "Wrong Credentials" + userId;
 
 					}
 
@@ -176,6 +176,57 @@ public class UserImpl implements UserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "Database error: " + e.getMessage();
+		}
+	}
+
+	@Override
+	public String save(Animal animal) {
+		try {
+			 // controllo id esistente del cliente nel db
+	        PreparedStatement checkCustomer = con.prepareStatement("SELECT * FROM customers WHERE customerId = ?");
+	        checkCustomer.setInt(1, animal.getCustomerId());
+	        ResultSet rs = checkCustomer.executeQuery();
+
+	        if (!rs.next()) {
+	            return "Errore: nessun cliente trovato con l'ID " + animal.getCustomerId();
+	        }
+	        
+			String q;
+
+			PreparedStatement ps = null;
+			if (animal.getRegistrationNumber() == 0) {
+				q = "INSERT INTO animals ( animalName, purchaseDate, price, animalType, customerId) VALUES ( ?, ?, ?, ?, ?)";
+				ps = con.prepareStatement(q);
+				ps.setString(1, animal.getAnimalName());
+				ps.setDate(2, new java.sql.Date(animal.getPurchaseDate().getTime()));
+				ps.setDouble(3, animal.getPrice());
+				ps.setString(4, animal.getAnimalType());
+				ps.setInt(5, animal.getCustomerId());
+
+			} else {
+				q = "INSERT INTO animals (registrationNumber, animalName, purchaseDate, price, animalType, customerId) VALUES (?, ?, ?, ?, ?, ?)";
+				ps.setInt(1, animal.getRegistrationNumber());
+				ps.setString(2, animal.getAnimalName());
+				ps.setDate(3, new java.sql.Date(animal.getPurchaseDate().getTime()));
+				ps.setDouble(4, animal.getPrice());
+				ps.setString(5, animal.getAnimalType());
+				ps.setInt(6, animal.getCustomerId());
+			}
+
+			int result = ps.executeUpdate();
+
+			ps.close();
+
+			if (result > 0) {
+				logger.info("Inserimento dell'animale " + animal.getAnimalName() + " effettuato correttamente.");
+				return "Inserimento dell'animale " + animal.getAnimalName() + " effettuato con success.";
+			} else {
+				return "Errore durante l'inserimento dell'animale.";
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Errore di database: " + e.getMessage();
 		}
 	}
 
