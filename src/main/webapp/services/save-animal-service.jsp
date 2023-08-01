@@ -14,7 +14,11 @@
     String animalName = request.getParameter("animalName");
     double price = Double.parseDouble(request.getParameter("price"));
     String animalType = request.getParameter("animalType");
-    int customerId = Integer.parseInt(request.getParameter("customerId"));
+    int customerId = -1;
+    if(request.getParameter("customerId") != null && !request.getParameter("customerId").isEmpty()){
+        customerId = Integer.parseInt(request.getParameter("customerId"));
+    }
+
     String purchaseDate = request.getParameter("purchaseDate");
 
     System.out.println("Animal Name: " + animalName);  // Stampa nome animale

@@ -61,8 +61,7 @@ public class UserImpl implements UserDAO {
 
 						String status = rs.getString("status");
 						if (status.equals("A")) {
-							logger.error("utente " + userId + " loggato");
-							logger.info("gggggggg");
+							logger.info("utente " + userId + " loggato");
 
 							return "success";
 						} else {

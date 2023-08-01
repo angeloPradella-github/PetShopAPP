@@ -26,9 +26,9 @@
 
 <body>
 	<jsp:include page="../util/navbar.jsp"></jsp:include>
-	
+
 	<jsp:include page="../util/animal-edit-modal.jsp"></jsp:include>
-	
+
 	<%
 	if (session.getAttribute("username") == null) {
 		response.sendRedirect("../login/login.jsp");
@@ -41,19 +41,21 @@
 	%>
 
 	<div class="container mt-4">
-	 <h1 class="mt-4">Registered Animals</h1>
+		<h1 class="mt-4">Registered Animals</h1>
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
-						<th><a class="btn btn-primary" href="../save-animal/save-animal.jsp">New <i class="fa-solid fa-plus"></i></a> Registration Number</th>
+						<th><a class="btn btn-primary"
+							href="../save-animal/save-animal.jsp">New <i
+								class="fa-solid fa-plus"></i></a> Registration Number</th>
 						<th>Name</th>
 						<th>Purchase Date</th>
 						<th>Price</th>
 						<th>Type</th>
 						<th>Customer ID</th>
 						<th>Edit</th>
-						
+
 					</tr>
 				</thead>
 
@@ -65,32 +67,40 @@
 					<tr>
 						<td id="registration-<%=animal.getRegistrationNumber()%>"><%=animal.getRegistrationNumber()%></td>
 						<td id="name-<%=animal.getRegistrationNumber()%>"><%=animal.getAnimalName()%></td>
-						<td id="purchaseDate-<%=animal.getRegistrationNumber()%>"><%
-if(animal.getPurchaseDate() == null) {
-  out.print("Available");
-} else {
-  out.print(sdf.format(animal.getPurchaseDate()));
-}
-%></td>
+						<td id="purchaseDate-<%=animal.getRegistrationNumber()%>">
+							<%
+							if (animal.getPurchaseDate() == null) {
+								out.print("<strong class='text-success'>Available</strong>");
+							} else {
+								out.print(sdf.format(animal.getPurchaseDate()));
+							}
+							%>
+						</td>
 						<td id="price-<%=animal.getRegistrationNumber()%>"><%=animal.getPrice()%></td>
 						<td id="type-<%=animal.getRegistrationNumber()%>"><%=animal.getAnimalType()%></td>
-						<td id="customerId-<%=animal.getRegistrationNumber()%>"><%=animal.getCustomerId()%></td>
 						<td id="customerId-<%=animal.getRegistrationNumber()%>">
-						
-						<button id="edit-<%=animal.getRegistrationNumber()%>"
+							<%
+							if (animal.getCustomerId() == -1) {
+								out.print("<strong class='text-success'>Available</strong>");
+							} else {
+								out.print(animal.getCustomerId());
+							}
+							%>
+						</td>
+						<td id="customerId-<%=animal.getRegistrationNumber()%>">
+
+							<button id="edit-<%=animal.getRegistrationNumber()%>"
 								class="edit-button btn btn-sm btn-outline-secondary edit">
 								<i class="fas fa-edit"></i>
-								
-							</button>
-							
-						<a id="delete-<%=animal.getRegistrationNumber()%>" href="../services/delete-animal-service.jsp?id=<%=animal.getRegistrationNumber()%>"
-								class=" btn btn-sm btn-outline-secondary delete">
-								
-								<i class="fa-solid fa-trash"></i>
-							</a>
-							
+
+							</button> <a id="delete-<%=animal.getRegistrationNumber()%>"
+							href="../services/delete-animal-service.jsp?id=<%=animal.getRegistrationNumber()%>"
+							class=" btn btn-sm btn-outline-secondary delete"> <i
+								class="fa-solid fa-trash"></i>
+						</a>
+
 						</td>
-						
+
 					</tr>
 
 					<%
@@ -99,8 +109,8 @@ if(animal.getPurchaseDate() == null) {
 				</tbody>
 			</table>
 		</div>
-		
-		
+
+
 		<%
 		String result = (String) request.getAttribute("result");
 		if (result != null && !result.isEmpty()) {
@@ -115,8 +125,8 @@ if(animal.getPurchaseDate() == null) {
 		}
 		%>
 	</div>
-	
-<script>
+
+	<script>
 document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll(".edit-button").forEach(button => {
     button.addEventListener('click', function() {

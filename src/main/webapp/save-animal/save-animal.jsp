@@ -40,7 +40,7 @@
 			<div class="form-outline mb-4">
 				<input type="date" id="purchaseDate" name="purchaseDate"
 					class="form-control" /> <label class="form-label"
-					for="purchaseDate">Purchase Date</label>
+					for="purchaseDate">Purchase Date <i class="fs-6">(Leave blank if not yet sold)</i></label>
 			</div>
 
 			<!-- Price input -->
@@ -60,8 +60,8 @@
 			<!-- Customer Id input -->
 			<div class="form-outline mb-4">
 				<input type="number" id="customerId" name="customerId"
-					class="form-control" required /> <label class="form-label"
-					for="customerId">Customer ID</label>
+					class="form-control"  /> <label class="form-label"
+					for="customerId">Customer ID <i class="fs-6">(Leave blank if not yet sold)</i></label>
 			</div>
 
 			<!-- Submit button -->
