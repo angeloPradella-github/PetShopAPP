@@ -35,8 +35,11 @@
     a.setPrice(price);
     a.setAnimalType(animalType);
     a.setCustomerId(customerId);
-    a.setPurchaseDate(new java.sql.Date(purchaseDateAsDate.getTime()));
-
+    if(purchaseDateAsDate == null){
+    a.setPurchaseDate(null);
+} else {
+  a.setPurchaseDate(new java.sql.Date(purchaseDateAsDate.getTime()));
+}
     System.out.println("Animal object: " + a);  // Stampa l'oggetto animale
 %>
 

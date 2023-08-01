@@ -182,15 +182,15 @@ public class UserImpl implements UserDAO {
 	@Override
 	public String save(Animal animal) {
 		try {
-			 // controllo id esistente del cliente nel db
-	        PreparedStatement checkCustomer = con.prepareStatement("SELECT * FROM customers WHERE customerId = ?");
-	        checkCustomer.setInt(1, animal.getCustomerId());
-	        ResultSet rs = checkCustomer.executeQuery();
+			// controllo id esistente del cliente nel db
+			PreparedStatement checkCustomer = con.prepareStatement("SELECT * FROM customers WHERE customerId = ?");
+			checkCustomer.setInt(1, animal.getCustomerId());
+			ResultSet rs = checkCustomer.executeQuery();
 
-	        if (!rs.next()) {
-	            return "Errore: nessun cliente trovato con l'ID " + animal.getCustomerId();
-	        }
-	        
+			if (!rs.next()) {
+				return "Errore: nessun cliente trovato con l'ID " + animal.getCustomerId();
+			}
+
 			String q;
 
 			PreparedStatement ps = null;
@@ -198,7 +198,10 @@ public class UserImpl implements UserDAO {
 				q = "INSERT INTO animals ( animalName, purchaseDate, price, animalType, customerId) VALUES ( ?, ?, ?, ?, ?)";
 				ps = con.prepareStatement(q);
 				ps.setString(1, animal.getAnimalName());
-				ps.setDate(2, new java.sql.Date(animal.getPurchaseDate().getTime()));
+				if (animal.getPurchaseDate() == null) {
+					ps.setDate(2, null);
+				} else
+					ps.setDate(2, new java.sql.Date(animal.getPurchaseDate().getTime()));
 				ps.setDouble(3, animal.getPrice());
 				ps.setString(4, animal.getAnimalType());
 				ps.setInt(5, animal.getCustomerId());
@@ -207,7 +210,10 @@ public class UserImpl implements UserDAO {
 				q = "INSERT INTO animals (registrationNumber, animalName, purchaseDate, price, animalType, customerId) VALUES (?, ?, ?, ?, ?, ?)";
 				ps.setInt(1, animal.getRegistrationNumber());
 				ps.setString(2, animal.getAnimalName());
-				ps.setDate(3, new java.sql.Date(animal.getPurchaseDate().getTime()));
+				if (animal.getPurchaseDate() == null) {
+					ps.setDate(2, null);
+				} else
+					ps.setDate(2, new java.sql.Date(animal.getPurchaseDate().getTime()));
 				ps.setDouble(4, animal.getPrice());
 				ps.setString(5, animal.getAnimalType());
 				ps.setInt(6, animal.getCustomerId());

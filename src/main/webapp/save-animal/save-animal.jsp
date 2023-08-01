@@ -39,7 +39,7 @@
 			<!-- Purchase Date input -->
 			<div class="form-outline mb-4">
 				<input type="date" id="purchaseDate" name="purchaseDate"
-					class="form-control" required /> <label class="form-label"
+					class="form-control" /> <label class="form-label"
 					for="purchaseDate">Purchase Date</label>
 			</div>
 
