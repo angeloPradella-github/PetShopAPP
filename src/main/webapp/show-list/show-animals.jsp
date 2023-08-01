@@ -53,6 +53,7 @@
 						<th>Type</th>
 						<th>Customer ID</th>
 						<th>Edit</th>
+						
 					</tr>
 				</thead>
 
@@ -79,7 +80,15 @@ if(animal.getPurchaseDate() == null) {
 						<button id="edit-<%=animal.getRegistrationNumber()%>"
 								class="edit-button btn btn-sm btn-outline-secondary edit">
 								<i class="fas fa-edit"></i>
+								
 							</button>
+							
+						<a id="delete-<%=animal.getRegistrationNumber()%>" href="../services/delete-animal-service.jsp?id=<%=animal.getRegistrationNumber()%>"
+								class=" btn btn-sm btn-outline-secondary delete">
+								
+								<i class="fa-solid fa-trash"></i>
+							</a>
+							
 						</td>
 						
 					</tr>

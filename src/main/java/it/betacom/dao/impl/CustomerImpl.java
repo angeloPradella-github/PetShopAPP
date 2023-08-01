@@ -121,5 +121,11 @@ public class CustomerImpl implements CustomerDAO {
 	    return customer;
 	}
 
+	@Override
+	public String delete(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

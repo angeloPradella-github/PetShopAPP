@@ -121,4 +121,22 @@ public class AnimalImpl implements AnimalDAO {
 		return null;
 	}
 
+	@Override
+	public String delete(int id) {
+		String deleteQuery = "DELETE FROM animals WHERE registrationNumber = ?";
+		try {
+			PreparedStatement ps = con.prepareStatement(deleteQuery);
+			ps.setInt(1, id);
+			int rowsAffected = ps.executeUpdate();
+			if (rowsAffected > 0) {
+				return "Animal " + id + " deleted successfully";
+			} else {
+				return "No animal found with registration number " + id;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Error while deleting animal";
+		}
+	}
+
 }

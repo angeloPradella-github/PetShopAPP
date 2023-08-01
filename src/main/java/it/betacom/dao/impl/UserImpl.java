@@ -443,4 +443,10 @@ public class UserImpl implements UserDAO {
 		}
 	}
 
+	@Override
+	public String delete(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
