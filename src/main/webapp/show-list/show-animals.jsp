@@ -87,26 +87,22 @@
 							}
 							%>
 						</td>
-						<td id="customerId-<%=animal.getRegistrationNumber()%>">
-
+						<td id="editButton-<%=animal.getRegistrationNumber()%>">
 							<button id="edit-<%=animal.getRegistrationNumber()%>"
 								class="edit-button btn btn-sm btn-outline-secondary edit">
 								<i class="fas fa-edit"></i>
-
 							</button> <a id="delete-<%=animal.getRegistrationNumber()%>"
 							href="../services/delete-animal-service.jsp?id=<%=animal.getRegistrationNumber()%>"
 							class=" btn btn-sm btn-outline-secondary delete"> <i
 								class="fa-solid fa-trash"></i>
 						</a>
-
 						</td>
-
 					</tr>
-
 					<%
 					}
 					%>
 				</tbody>
+
 			</table>
 		</div>
 
@@ -127,36 +123,45 @@
 	</div>
 
 	<script>
-document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll(".edit-button").forEach(button => {
-    button.addEventListener('click', function() {
-      let animalId = this.id.split('-')[1];
+	document.addEventListener('DOMContentLoaded', (event) => {
+		  document.querySelectorAll(".edit-button").forEach(button => {
+		    button.addEventListener('click', function() {
+		      let animalId = this.id.split('-')[1];
 
-      const animal = {
-        name: document.getElementById('name-' + animalId).textContent,
-        purchaseDate: document.getElementById('purchaseDate-' + animalId).textContent,
-        price: document.getElementById('price-' + animalId).textContent,
-        type: document.getElementById('type-' + animalId).textContent,
-        customerId: document.getElementById('customerId-' + animalId).textContent,
-      };
+		      const animal = {
+		        name: document.getElementById('name-' + animalId).textContent,
+		        purchaseDate: document.getElementById('purchaseDate-' + animalId).textContent,
+		        price: document.getElementById('price-' + animalId).textContent,
+		        type: document.getElementById('type-' + animalId).textContent,
+		        customerId: document.getElementById('customerId-' + animalId).textContent,
+		      };
 
-      document.getElementById('editAnimalRegistrationNumber').value = animalId;
-      document.getElementById('editName').value = animal.name;
-      document.getElementById('editPurchaseDate').value = animal.purchaseDate;
-      document.getElementById('editPrice').value = animal.price;
-      document.getElementById('editType').value = animal.type;
-      document.getElementById('editCustomerId').value = animal.customerId;
+		      // Verifica se la data di acquisto o l'ID cliente sono "Available"
+		      if (animal.purchaseDate === 'Available') {
+		        animal.purchaseDate = ''; // Oppure impostare su un valore predefinito appropriato
+		      }
+		      if (animal.customerId === 'Available') {
+		        animal.customerId = ''; // Oppure impostare su un valore predefinito appropriato
+		      }
 
-      // Modal title
-      let animalName = document.getElementById('name-' + animalId).textContent;
-      document.getElementById('editAnimalModalLabel').textContent = 'Edit Animal ' + animalName;
-      
-      // Show the modal
-      let modal = new bootstrap.Modal(document.getElementById('editAnimalModal'));
-      modal.show();
-    });
-  });
-});
+		      document.getElementById('editAnimalRegistrationNumber').value = animalId;
+		      document.getElementById('editName').value = animal.name;
+		      document.getElementById('editPurchaseDate').value = animal.purchaseDate;
+		      document.getElementById('editPrice').value = animal.price;
+		      document.getElementById('editType').value = animal.type;
+		      document.getElementById('editCustomerId').value = animal.customerId;
+
+		      // Modal title
+		      let animalName = document.getElementById('name-' + animalId).textContent;
+		      document.getElementById('editAnimalModalLabel').textContent = 'Edit Animal ' + animalName;
+		      
+		      // Show the modal
+		      let modal = new bootstrap.Modal(document.getElementById('editAnimalModal'));
+		      modal.show();
+		    });
+		  });
+		});
+
 </script>
 
 	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
