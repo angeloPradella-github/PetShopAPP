@@ -24,6 +24,7 @@
 </head>
 
 <body>
+<%String role = (String) session.getAttribute("role");%>
 	<jsp:include page="../util/navbar.jsp"></jsp:include>
 
 	<%
@@ -69,7 +70,12 @@
 						<th>Address</th>
 						<th>City</th>
 						<th>Phone Number</th>
+						<%
+						if (role != null && role.equalsIgnoreCase("M")) {
+						%>
 						<th>View Purchased Animals</th>
+						
+						<%}%>
 					</tr>
 				</thead>
 
@@ -83,10 +89,14 @@
 						<td><%=customer.getAddress()%></td>
 						<td><%=customer.getCity()%></td>
 						<td><%=customer.getPhoneNumber()%></td>
+						<%
+						if (role != null && role.equalsIgnoreCase("M")) {
+						%>
 						<td><a class="btn btn-sm btn-outline-secondary"
 							href="clienti.jsp?customerId=<%=customer.getCustomerId()%>">
 								<i class="fa-solid fa-eye"></i> Mostra
 						</a></td>
+						<%}%>
 					</tr>
 					<%
                     }
@@ -111,10 +121,12 @@
 
 
 		<%
-			if (animalList != null) {
+			if (animalList != null ) {
 
     		Customer customer = customerImpl.getCustomerById(customerId);
     		String customerName = customer.getFirstName() + " " + customer.getLastName();
+    		
+    		if( animalList.size() > 1){
 		%>
 			<h1 class="mt-4"> Acquisti del Cliente: <%=customerName%></h1>
 		
@@ -157,9 +169,12 @@
 
 
 		<%
-        }
+        } else if (animalList.size() < 1){%>
         
+        <h2 class="mt-4">No animals purchased by:  <%= customerName%></h2>
+       <% } }
         %>
+        
 
 	</div>
 

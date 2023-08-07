@@ -33,8 +33,7 @@
 	if (session.getAttribute("username") == null) {
 		response.sendRedirect("../login/login.jsp");
 		return;
-	}
-
+	}	String role = (String) session.getAttribute("role"); 
 	Connection con = Database.getConnection();
 	AnimalImpl animalDAO = new AnimalImpl(con);;
 	List<Animal> animalList = animalDAO.getAll();
@@ -46,15 +45,26 @@
 			<table class="table table-bordered table-striped">
 				<thead>
 					<tr>
-						<th><a class="btn btn-primary"
+						<th>
+						<%
+						if (role != null && role.equalsIgnoreCase("M")) {
+						%>
+						<a class="btn btn-primary"
 							href="../save-animal/save-animal.jsp">New <i
-								class="fa-solid fa-plus"></i></a> Registration Number</th>
+								class="fa-solid fa-plus"></i></a>
+						<%}%>
+						
+						 Registration Number</th>
 						<th>Name</th>
 						<th>Purchase Date</th>
 						<th>Price</th>
 						<th>Type</th>
 						<th>Customer ID</th>
+						<%
+						if (role != null && role.equalsIgnoreCase("M")) {
+						%>
 						<th>Edit</th>
+						<%}%>
 
 					</tr>
 				</thead>
@@ -87,16 +97,21 @@
 							}
 							%>
 						</td>
+						<%
+						if (role != null && role.equalsIgnoreCase("M")) {
+						%>
 						<td id="editButton-<%=animal.getRegistrationNumber()%>">
 							<button id="edit-<%=animal.getRegistrationNumber()%>"
 								class="edit-button btn btn-sm btn-outline-secondary edit">
 								<i class="fas fa-edit"></i>
-							</button> <a id="delete-<%=animal.getRegistrationNumber()%>"
+							</button>
+							
+							 <a id="delete-<%=animal.getRegistrationNumber()%>"
 							href="../services/delete-animal-service.jsp?id=<%=animal.getRegistrationNumber()%>"
 							class=" btn btn-sm btn-outline-secondary delete"> <i
 								class="fa-solid fa-trash"></i>
 						</a>
-						</td>
+						</td><%}%>
 					</tr>
 					<%
 					}
