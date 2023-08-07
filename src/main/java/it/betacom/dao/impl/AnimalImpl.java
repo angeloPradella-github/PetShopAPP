@@ -72,9 +72,10 @@ public class AnimalImpl implements AnimalDAO {
 		if (animal.getAnimalType() != null) {
 			sql += ", animalType = ?";
 		}
-		if (!Objects.isNull(animal.getCustomerId())) {
+			
+			System.out.println(animal.getCustomerId());
 			sql += ", customerId = ?";
-		}
+		
 
 		sql += " WHERE registrationNumber = ?";
 
@@ -96,10 +97,14 @@ public class AnimalImpl implements AnimalDAO {
 			if (animal.getAnimalType() != null) {
 				ps.setString(index++, animal.getAnimalType());
 			}
-			if (!Objects.isNull(animal.getCustomerId())) {
+			if ( animal.getCustomerId() != 0) {
 				ps.setInt(index++, animal.getCustomerId());
+				System.out.println( "customerId " + animal.getCustomerId());
 			}
-
+			else {
+				System.out.println("customerId iside the else statement " + animal.getCustomerId());
+				ps.setInt(index++, -1);
+			}
 			ps.setInt(index, animal.getRegistrationNumber());
 
 			int rowsAffected = ps.executeUpdate();

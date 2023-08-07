@@ -130,27 +130,40 @@
 
 		      const animal = {
 		        name: document.getElementById('name-' + animalId).textContent,
-		        purchaseDate: document.getElementById('purchaseDate-' + animalId).textContent,
+		        purchaseDate: document.getElementById('purchaseDate-' + animalId).textContent.trim(),
 		        price: document.getElementById('price-' + animalId).textContent,
 		        type: document.getElementById('type-' + animalId).textContent,
 		        customerId: document.getElementById('customerId-' + animalId).textContent,
 		      };
+		      
+		      console.log(animal.customerId);
+		      console.log(animal. purchaseDate);
 
 		      // Verifica se la data di acquisto o l'ID cliente sono "Available"
 		      if (animal.purchaseDate === 'Available') {
 		        animal.purchaseDate = ''; // Oppure impostare su un valore predefinito appropriato
 		      }
-		      if (animal.customerId === 'Available') {
+		     /* if (animal.customerId === 'Available') {
 		        animal.customerId = ''; // Oppure impostare su un valore predefinito appropriato
-		      }
+		        }*/
+		      
 
 		      document.getElementById('editAnimalRegistrationNumber').value = animalId;
 		      document.getElementById('editName').value = animal.name;
+		
+    
 		      document.getElementById('editPurchaseDate').value = animal.purchaseDate;
 		      document.getElementById('editPrice').value = animal.price;
 		      document.getElementById('editType').value = animal.type;
-		      document.getElementById('editCustomerId').value = animal.customerId;
+		      
+		      document.getElementById('editCustomerId').value = parseInt(animal.customerId, 10);
+		      
+		      
+		      
+		      
+console.log(new Date(animal.purchaseDate));
 
+console.log(document.getElementById('editCustomerId').value);
 		      // Modal title
 		      let animalName = document.getElementById('name-' + animalId).textContent;
 		      document.getElementById('editAnimalModalLabel').textContent = 'Edit Animal ' + animalName;
